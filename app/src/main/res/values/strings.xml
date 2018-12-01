@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RecyclerView2D</string>
+    <string name="video_thumbnail">thumbnail</string>
 </resources>

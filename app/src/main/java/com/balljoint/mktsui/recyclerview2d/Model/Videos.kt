@@ -1,6 +1,6 @@
 package com.balljoint.mktsui.recyclerview2d.Model
 
-data class Video (
+data class Videos (
     var category: String,
     val items: List<Items>
 ) {
