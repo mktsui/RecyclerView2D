@@ -1,4 +1,4 @@
-package com.balljoint.mktsui.recyclerview2d.Model
+package com.balljoint.mktsui.recyclerview2d.model
 
 data class Videos (
     var category: String,

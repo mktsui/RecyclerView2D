@@ -1,4 +1,4 @@
-package com.balljoint.mktsui.recyclerview2d.Adapter
+package com.balljoint.mktsui.recyclerview2d.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.balljoint.mktsui.recyclerview2d.Model.Items
+import com.balljoint.mktsui.recyclerview2d.model.Items
 import com.balljoint.mktsui.recyclerview2d.R
 
 class VideoAdapter() : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
@@ -15,14 +15,21 @@ class VideoAdapter() : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
     private lateinit var mContext: Context
     private var mCategory: Int = 0
     private lateinit var mVideoList: List<Items>
+    private lateinit var mListener: OnVideoItemSelected
 
     constructor(context: Context, category: Int, videoList: List<Items>) : this() {
+        if (context is OnVideoItemSelected) {
+            mListener = context
+        } else {
+            throw ClassCastException(context.toString() + " must implement OnVideoItemSelected")
+        }
         this.mContext = context
         this.mCategory = category
         this.mVideoList = videoList
     }
 
-    inner class VideoViewHolder(videoListView: View) : RecyclerView.ViewHolder(videoListView)
+    inner class VideoViewHolder(videoListView: View) :
+        RecyclerView.ViewHolder(videoListView)
 
     override fun getItemCount(): Int {
         return mVideoList.size
@@ -39,7 +46,7 @@ class VideoAdapter() : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
     }
 
     override fun onBindViewHolder(p0: VideoViewHolder, p1: Int) {
-        val current = mVideoList[p1]
+        val currentItem = mVideoList[p1]
         val videoImgView : ImageView
         val videoTitleView : TextView
 
@@ -54,8 +61,12 @@ class VideoAdapter() : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
             }
         }
 
-        videoTitleView.text = current.title
+        videoTitleView.text = currentItem.title
+        p0.itemView.setOnClickListener{mListener.onVideoItemSelected(currentItem)}
+    }
 
+    interface OnVideoItemSelected {
+        fun onVideoItemSelected(video: Items)
     }
 
 }

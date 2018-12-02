@@ -1,11 +1,11 @@
-package com.balljoint.mktsui.recyclerview2d.ViewModel
+package com.balljoint.mktsui.recyclerview2d.viewModel
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
-import com.balljoint.mktsui.recyclerview2d.Model.Videos
-import com.balljoint.mktsui.recyclerview2d.Utilities.Constants
+import com.balljoint.mktsui.recyclerview2d.model.Videos
+import com.balljoint.mktsui.recyclerview2d.utilities.Constants
 import com.google.gson.Gson
 import java.io.InputStream
 import java.lang.Exception

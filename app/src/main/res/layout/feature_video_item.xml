@@ -23,14 +23,13 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_launcher_background"/>
 
-
         <TextView
                 android:id="@+id/video_title_f"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:textColor="@android:color/black"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
     </LinearLayout>
 

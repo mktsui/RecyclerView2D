@@ -1,4 +1,4 @@
-package com.balljoint.mktsui.recyclerview2d.Utilities
+package com.balljoint.mktsui.recyclerview2d.utilities
 
 /*
     All constant values
