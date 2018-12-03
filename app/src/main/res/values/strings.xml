@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Video Catalogue</string>
     <string name="video_thumbnail">thumbnail</string>
+    <string name="ds_return_msg_empty">No result</string>
+    <string name="ds_return_msg_fail">API error</string>
+    <string name="ds_return_msg_bad_format">Unsupported format</string>
 </resources>

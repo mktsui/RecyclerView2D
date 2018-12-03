@@ -5,10 +5,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
+import com.android.volley.toolbox.NetworkImageView
 import com.balljoint.mktsui.recyclerview2d.model.Items
 import com.balljoint.mktsui.recyclerview2d.R
+import com.balljoint.mktsui.recyclerview2d.utilities.VolleySingleton
 
 class VideoAdapter() : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
 
@@ -28,8 +29,7 @@ class VideoAdapter() : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
         this.mVideoList = videoList
     }
 
-    inner class VideoViewHolder(videoListView: View) :
-        RecyclerView.ViewHolder(videoListView)
+    inner class VideoViewHolder(videoListView: View): RecyclerView.ViewHolder(videoListView)
 
     override fun getItemCount(): Int {
         return mVideoList.size
@@ -47,21 +47,26 @@ class VideoAdapter() : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
 
     override fun onBindViewHolder(p0: VideoViewHolder, p1: Int) {
         val currentItem = mVideoList[p1]
-        val videoImgView : ImageView
+        val videoImgView : NetworkImageView
         val videoTitleView : TextView
+        val imgURL : String
 
         when(mCategory) {
             0 -> {
                 videoImgView = p0.itemView.findViewById(R.id.landscape_image)
                 videoTitleView = p0.itemView.findViewById(R.id.video_title_f)
+                imgURL = currentItem.images.landscape
             }
             else -> {
                 videoImgView = p0.itemView.findViewById(R.id.portrait_image)
                 videoTitleView = p0.itemView.findViewById(R.id.video_title_r)
+                imgURL = currentItem.images.portrait
             }
         }
 
         videoTitleView.text = currentItem.title
+        videoImgView.setImageUrl(imgURL, VolleySingleton.getInstance(this.mContext).imageLoader)
+
         p0.itemView.setOnClickListener{mListener.onVideoItemSelected(currentItem)}
     }
 

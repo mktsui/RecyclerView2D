@@ -6,16 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
+import com.android.volley.toolbox.NetworkImageView
 import com.balljoint.mktsui.recyclerview2d.R
 import com.balljoint.mktsui.recyclerview2d.model.Items
+import com.balljoint.mktsui.recyclerview2d.utilities.VolleySingleton
 
 class VideoDetailsFragment : Fragment() {
 
     companion object {
-        private const val VIDEO = "video"
-
         fun newInstance(video: Items) : VideoDetailsFragment{
             val args = Bundle()
             args.putString("title", video.title)
@@ -33,7 +32,7 @@ class VideoDetailsFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.video_details_fragment, container, false)
 
-        val imgView = view.findViewById<ImageView>(R.id.detail_img)
+        val imgView = view.findViewById<NetworkImageView>(R.id.detail_img)
         val yearText = view.findViewById<TextView>(R.id.detail_year)
         val descText = view.findViewById<TextView>(R.id.detail_desc)
         val titleText = view.findViewById<TextView>(R.id.detail_title)
@@ -43,7 +42,8 @@ class VideoDetailsFragment : Fragment() {
             yearText.text = arguments!!.getInt("year").toString()
             descText.text = arguments!!.getString("desc")
             titleText.text = arguments!!.getString("title")
-
+            imgView.setImageUrl(arguments!!.getString("imgSrc"),
+                VolleySingleton.getInstance(this.context!!).imageLoader)
         }
 
         val closeBtn = view.findViewById<ImageButton>(R.id.detail_close_btn)

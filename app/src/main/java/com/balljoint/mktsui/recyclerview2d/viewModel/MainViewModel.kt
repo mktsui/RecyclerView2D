@@ -2,17 +2,17 @@ package com.balljoint.mktsui.recyclerview2d.viewModel
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.util.Log
 import com.balljoint.mktsui.recyclerview2d.model.Videos
-import com.balljoint.mktsui.recyclerview2d.utilities.Constants
-import com.google.gson.Gson
-import java.io.InputStream
-import java.lang.Exception
-import java.util.*
+import com.balljoint.mktsui.recyclerview2d.repository.DataManager
+import kotlin.collections.ArrayList
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class MainViewModel(application: Application) : AndroidViewModel(application), DataManager.OnRetrieveDataCallback {
     private lateinit var videoLD: MutableLiveData<ArrayList<Videos>>
+    private val badResponse = MutableLiveData<Int>()
+    private val mContext = application
+
 
     fun getVideoList(): MutableLiveData<ArrayList<Videos>> {
         if(!::videoLD.isInitialized) {
@@ -21,37 +21,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         return videoLD
     }
 
-    private fun readJson(jsonFile:String): List<Videos> {
-
-        var testModel = emptyList<Videos>()
-        try {
-            val inStream: InputStream = getApplication<Application>().assets.open(jsonFile)
-            val inString = inStream.bufferedReader().use { it.readText() }
-            testModel = Gson().fromJson(inString, Array<Videos>::class.java).toList()
-        } catch (e:Exception) {
-            Log.d("Video", e.toString())
-        }
-
-        return testModel
+    fun getState(): LiveData<Int> {
+        return badResponse
     }
 
-    private fun reorderList(mList: List<Videos>): ArrayList<Videos> {
-        val orderedList = arrayListOf(Videos(), Videos(), Videos())
+    override fun onRetrieveDataSuccess(videoList: ArrayList<Videos>){
+        videoLD.postValue(videoList)
+    }
 
-        mList.forEach {
-            when(it.category) {
-                "Features" -> orderedList[0] = it
-                "Movies" -> orderedList[1] = it
-                "TV Shows" -> orderedList[2] = it
-            }
-        }
-
-        return orderedList
+    override fun onRetrieveDataError(e: Int) {
+        badResponse.postValue(e)
     }
 
     fun loadVideo() {
-        val resultList= reorderList(readJson(Constants.DUMMY_DATA_CORRECT))
-        videoLD.postValue(resultList)
+//        DataManager(mContext, this).mockData()
+//        DataManager(mContext, this).readJson(Constants.DUMMY_DATA_CORRECT)
+        DataManager(mContext, this).callAPI()
     }
 
 }
