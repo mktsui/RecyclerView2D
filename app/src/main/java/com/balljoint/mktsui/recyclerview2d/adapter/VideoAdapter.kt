@@ -37,7 +37,7 @@ class VideoAdapter() : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): VideoViewHolder {
         val vh:View = if (mCategory == 0) {
-            // only first in list is Features list
+            // only first in list is Features list, and the rest are regular, two separate layouts are used
             LayoutInflater.from(mContext).inflate(R.layout.feature_video_item, p0,false)
         } else {
             LayoutInflater.from(mContext).inflate(R.layout.regular_video_item, p0, false)
@@ -51,6 +51,7 @@ class VideoAdapter() : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
         val videoTitleView : TextView
         val imgURL : String
 
+        // only first in list will display landscape img
         when(mCategory) {
             0 -> {
                 videoImgView = p0.itemView.findViewById(R.id.landscape_image)
@@ -65,11 +66,14 @@ class VideoAdapter() : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
         }
 
         videoTitleView.text = currentItem.title
+
+        // Volley would manage to download image asynchronously, no specific threading management is required
         videoImgView.setImageUrl(imgURL, VolleySingleton.getInstance(this.mContext).imageLoader)
 
         p0.itemView.setOnClickListener{mListener.onVideoItemSelected(currentItem)}
     }
 
+    // call back when any video item is selected
     interface OnVideoItemSelected {
         fun onVideoItemSelected(video: Items)
     }

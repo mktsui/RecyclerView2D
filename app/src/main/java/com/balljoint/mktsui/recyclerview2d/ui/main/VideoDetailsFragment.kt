@@ -12,6 +12,9 @@ import com.balljoint.mktsui.recyclerview2d.R
 import com.balljoint.mktsui.recyclerview2d.model.Items
 import com.balljoint.mktsui.recyclerview2d.utilities.VolleySingleton
 
+/*
+** View for video details
+ */
 class VideoDetailsFragment : Fragment() {
 
     companion object {
@@ -42,16 +45,19 @@ class VideoDetailsFragment : Fragment() {
             yearText.text = arguments!!.getInt("year").toString()
             descText.text = arguments!!.getString("desc")
             titleText.text = arguments!!.getString("title")
+            // Volley would manage and try retrieving image from cache
             imgView.setImageUrl(arguments!!.getString("imgSrc"),
                 VolleySingleton.getInstance(this.context!!).imageLoader)
         }
 
+        // close button at top right corner
         val closeBtn = view.findViewById<ImageButton>(R.id.detail_close_btn)
         closeBtn.setOnClickListener(clickListener)
 
         return view
     }
 
+    // close button click listener
     private val clickListener = View.OnClickListener { view ->
 
         when (view.id) {

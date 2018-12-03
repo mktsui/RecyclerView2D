@@ -19,7 +19,7 @@ import com.balljoint.mktsui.recyclerview2d.adapter.CategoryAdapter
 import com.balljoint.mktsui.recyclerview2d.viewModel.MainViewModel
 
 
-
+// View for video catalogue
 class MainFragment : Fragment() {
 
     private lateinit var mVM: MainViewModel
@@ -38,7 +38,6 @@ class MainFragment : Fragment() {
             ViewModelProviders.of(this).get(MainViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-//        mVM = MainViewModel(context!!)
     }
 
     override fun onCreateView(
@@ -46,11 +45,12 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?): View {
         val view: View = inflater.inflate(R.layout.main_fragment, container, false)
 
-        mRV = view.findViewById<RecyclerView>(R.id.category_recycler_view)
+        mRV = view.findViewById(R.id.category_recycler_view)
 
         val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
         toolbar.title = getString(R.string.app_name)
 
+        // show error messages if bad results return from data source
         val result = view.findViewById<LinearLayout>(R.id.result_placeholder)
         val errMsg = view.findViewById<TextView>(R.id.result_text)
         mVM.getState().observe(this, Observer {

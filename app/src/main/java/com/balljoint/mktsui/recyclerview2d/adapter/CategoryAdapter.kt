@@ -3,7 +3,6 @@ package com.balljoint.mktsui.recyclerview2d.adapter
 import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,6 @@ class CategoryAdapter(context: Context) : RecyclerView.Adapter<CategoryViewHolde
     internal fun setCategories(mList:ArrayList<Videos>) {
         this.dataList = mList
         notifyDataSetChanged()
-        Log.d("Video", "Update dataset")
     }
 
     inner class CategoryViewHolder(catView: View) : RecyclerView.ViewHolder(catView)
@@ -38,6 +36,8 @@ class CategoryAdapter(context: Context) : RecyclerView.Adapter<CategoryViewHolde
         val videoRCView = p0.itemView.findViewById<RecyclerView>(R.id.video_item_recycle_view)
 
         categoryTitleView.text = current.category
+
+        // init recycler view for horizontal video lists
         videoRCView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)

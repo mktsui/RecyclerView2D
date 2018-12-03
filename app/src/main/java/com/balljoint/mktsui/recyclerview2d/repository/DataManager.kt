@@ -14,11 +14,15 @@ import com.google.gson.JsonParseException
 import java.io.InputStream
 import java.lang.Exception
 
+/*
+** Model class
+ */
 class DataManager(context: Context, mVM: MainViewModel) {
 
     private val mContext = context
     private val dataCB = mVM
 
+    // method to call API with Volley
     fun callAPI() {
         val url = Constants.API_LINK
 
@@ -39,6 +43,8 @@ class DataManager(context: Context, mVM: MainViewModel) {
 
     }
 
+    // Below code were used during development to get Json objects
+    /*
     fun readJson(jsonFile:String) {
 
         try {
@@ -49,14 +55,14 @@ class DataManager(context: Context, mVM: MainViewModel) {
             dataCB.onRetrieveDataError(R.string.ds_return_msg_fail)
         }
     }
+    */
 
-    fun mockData(){
-        val input =
-            "[{\"category\": \"\",\"items\": [{\"title\": \"\",\"year\": 0,\"description\": \"\",\"images\": {\"portrait\": \"\",\"landscape\": \"\"}}]}]"
-
-        parseJson(input)
+    // for testing
+    fun mockData(jsonString: String){
+        parseJson(jsonString)
     }
 
+    // 2nd step in the pipeline for parsing Json object from input using Gson
     private fun parseJson(jsonString: String) {
         try {
             val parsedJsonList =
@@ -67,10 +73,14 @@ class DataManager(context: Context, mVM: MainViewModel) {
         }
     }
 
+    // Special treatment to make the list order same as mock up
     private fun reorderList(mList: List<Videos>) {
+        // according to the mockup, only 3 lists will be displayed
         val orderedList = arrayListOf(Videos(), Videos(), Videos())
         var listCount = 3
 
+        // Since I need to follow the order in mockup without given logic,
+        // so this has to be done in hardcode manner
         mList.forEach {
             when(it.category) {
                 "Features" -> {
@@ -88,14 +98,19 @@ class DataManager(context: Context, mVM: MainViewModel) {
             }
         }
 
+        // error handling for different scenario
         when (listCount) {
+            // successful data retrieve
             0 -> dataCB.onRetrieveDataSuccess(orderedList)
+            // none of the 3 categories can be populated
             3 -> dataCB.onRetrieveDataError(R.string.ds_return_msg_empty)
+            // only some of the categories can be populated
             else -> dataCB.onRetrieveDataError(R.string.ds_return_msg_bad_format)
         }
 
     }
 
+    // for viewmodel to override callback functions
     interface OnRetrieveDataCallback {
         fun onRetrieveDataSuccess(videoList: ArrayList<Videos>)
         fun onRetrieveDataError(e: Int)
